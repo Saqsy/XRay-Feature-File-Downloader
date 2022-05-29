@@ -30,10 +30,8 @@ public class FeatureDownloader extends AuthenticationGenerator {
         httpRequest = RestAssured.given();
 
             String endpoint = "https://xray.cloud.getxray.app/api/v2/export/cucumber?keys=" + testCaseId;
-            System.out.println(getAuthenticationToken());
             response = httpRequest.headers("Authorization", getAuthenticationToken(), "Content-Type",
                     ContentType.JSON).get(endpoint);
-            System.out.println(response.asString());
         return response;
     }
 }

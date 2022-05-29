@@ -4,17 +4,25 @@
  */
 package XRayFeatureFileDownloader;
 
-import components.taskExecutor;
+import components.TaskExecutor;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static components.ExcelProcessor.fetchDataFromExcel;
 
 /**
  * @author Saqsy
  */
 public class Main extends javax.swing.JFrame {
+
+    // custom variables
+    public static ArrayList<String> testCases = new ArrayList<>();
 
     /**
      * Creates new form Main
@@ -177,18 +185,36 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_inputTypeComboBoxItemStateChanged
 
     private void chooseExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseExcelActionPerformed
-        
+        FileFilter filter;
+        filter = new FileNameExtensionFilter("Excel File", "xlsx");
+        excelFileChooser.addChoosableFileFilter(filter);
+        excelFileChooser.setFileFilter(filter);
+        int r = excelFileChooser.showSaveDialog(null);
+
+        if (r == JFileChooser.APPROVE_OPTION) {
+            testCases.clear();
+            testCases = fetchDataFromExcel(excelFileChooser.getSelectedFile());
+        } else {
+            JOptionPane.showMessageDialog(null,"No file selected, try again");
+        }
     }//GEN-LAST:event_chooseExcelActionPerformed
 
     private void downloadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_downloadButtonActionPerformed
 
         SwingWorker swingWorker = new SwingWorker() {
             @Override
-            protected Void doInBackground() throws Exception {
+            protected Void doInBackground() {
                 if (!chooseExcel.isEnabled() && !testCaseIdsTextField.getText().isEmpty()){
                     List<String> testCases = Arrays.asList(testCaseIdsTextField.getText().trim().split(","));
-                    taskExecutor taskExecutor = new taskExecutor(Integer.parseInt(threadNumberComboBox.getSelectedItem().toString()));
+                    TaskExecutor taskExecutor = new TaskExecutor(Integer.parseInt(threadNumberComboBox.getSelectedItem().toString()));
                     taskExecutor.executeDownloadAndProcessingTask(testCases);
+                } else {
+                    if (!testCases.isEmpty()){
+                        TaskExecutor taskExecutor = new TaskExecutor(Integer.parseInt(threadNumberComboBox.getSelectedItem().toString()));
+                        taskExecutor.executeDownloadAndProcessingTask(testCases);
+                    } else {
+                        JOptionPane.showMessageDialog(null,"Could not fetch test cases from excel, try again");
+                    }
                 }
                 return null;
             }

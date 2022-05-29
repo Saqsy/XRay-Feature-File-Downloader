@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class taskExecutor {
+public class TaskExecutor {
 
     private final ExecutorService executorService;
 
-    public taskExecutor(int threads) {
+    public TaskExecutor(int threads) {
         this.executorService = Executors.newFixedThreadPool(threads);
     }
 
