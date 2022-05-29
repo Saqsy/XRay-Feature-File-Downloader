@@ -6,4 +6,8 @@ Java Utility to download cucumber feature files directly from JIRA Xray plugin. 
 
 XRay endpoint and documentation link used in utility - [XRAY Docs](https://docs.getxray.app/display/XRAYCLOUD/Exporting+Cucumber+Tests+-+REST+v2)
 
+# Releases
+[Click here to check latest releases](https://github.com/Saqsy/XRay-Feature-File-Downloader/releases/)
+
+# License
 Licensed under the [MIT License](LICENSE)
